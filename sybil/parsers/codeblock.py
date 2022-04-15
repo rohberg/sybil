@@ -68,8 +68,8 @@ class PythonCodeBlockParser(CodeBlockParser):
     """
     A class to instantiate and include when your documentation makes use of
     Python :ref:`codeblock-parser` examples.
-     
-    :param future_imports: 
+
+    :param future_imports:
         An optional list of strings that will be turned into
         ``from __future__ import ...`` statements and prepended to the code
         in each of the examples found by this parser.
@@ -84,7 +84,20 @@ class PythonCodeBlockParser(CodeBlockParser):
     def evaluate(self, example: Example) -> None:
         # There must be a nicer way to get line numbers to be correct...
         source = self.pad(example.parsed, example.line)
-        code = compile(source, example.path, 'exec', flags=self.flags, dont_inherit=True)
+        print("--- source", source.strip())
+        code = compile(
+            source, example.path, 'exec', flags=self.flags, dont_inherit=True)
+
+        # print(
+        #     "\n*** PythonCodeBlockParser. example.namespace",
+        #     example.namespace
+        #     )
+
         exec(code, example.namespace)
         # exec adds __builtins__, we don't want it:
         del example.namespace['__builtins__']
+
+        print(
+            "\n*** PythonCodeBlockParser. example.namespace",
+            example.namespace
+            )
