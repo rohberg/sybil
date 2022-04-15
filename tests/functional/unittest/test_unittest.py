@@ -15,7 +15,7 @@ def check(letter, example):
         message = '{} count was {} instead of {}'.format(
             letter, actual, expected
         )
-        if letter=='X':
+        if letter == 'X':
             raise ValueError(message)
         return message
 

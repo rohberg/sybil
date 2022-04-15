@@ -15,8 +15,10 @@ from ..region import Region
 class DocTest(BaseDocTest):
     def __init__(self, examples, globs, name, filename, lineno, docstring):
         # do everything like regular doctests, but don't make a copy of globs
-        BaseDocTest.__init__(self, examples, globs, name, filename, lineno,
-            docstring)
+        BaseDocTest.__init__(
+            self, examples, globs, name, filename, lineno,
+            docstring
+            )
         self.globs = globs
 
 
@@ -38,8 +40,8 @@ class DocTestParser(BaseDocTestParser):
     """
     A class to instantiate and include when your documentation makes use of
     :ref:`doctest-parser` examples.
-     
-    :param optionflags: 
+
+    :param optionflags:
         :ref:`doctest option flags<option-flags-and-directives>` to use
         when evaluating the examples found by this parser.
 
@@ -54,7 +56,7 @@ class DocTestParser(BaseDocTestParser):
         # If all lines begin with the same indentation, then strip it.
         min_indent = self._min_indent(text)
         if min_indent > 0:
-            text = '\n'.join([l[min_indent:] for l in text.split('\n')])
+            text = '\n'.join([line[min_indent:] for line in text.split('\n')])
 
         charno, lineno = 0, 0
         # Find all doctest examples in the string:
@@ -63,17 +65,19 @@ class DocTestParser(BaseDocTestParser):
             lineno += text.count('\n', charno, m.start())
             # Extract info from the regexp match.
             (source, options, want, exc_msg) = \
-                     self._parse_example(m, document.path, lineno)
+                self._parse_example(m, document.path, lineno)
 
             # Create an Example, and add it to the list.
             if not self._IS_BLANK_OR_COMMENT(source):
                 yield Region(
                     m.start(),
                     m.end(),
-                    DocTestExample(source, want, exc_msg,
-                            lineno=lineno,
-                            indent=min_indent+len(m.group('indent')),
-                            options=options),
+                    DocTestExample(
+                        source, want, exc_msg,
+                        lineno=lineno,
+                        indent=min_indent+len(m.group('indent')),
+                        options=options
+                        ),
                     self.evaluate
 
                 )
