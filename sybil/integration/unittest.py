@@ -14,24 +14,27 @@ class TestCase(BaseTestCase):
         self.example = example
 
     def runTest(self):
+        self.setupNamespace()
         self.example.evaluate()
+        self.tearDownNamespace()
 
     def id(self):
-        return '{},line:{},column:{}'.format(
-            self.example.path, self.example.line, self.example.column
-        )
+        return f"{self.example.path},line:{self.example.line},column:{self.example.column}"
 
     __str__ = __repr__ = id
 
-    @classmethod
-    def setUpClass(cls):
-        if cls.sybil.setup is not None:
-            cls.sybil.setup(cls.namespace)
+    # @classmethod
+    # def setUpClass(self):
+    def setupNamespace(self):
+        if self.sybil.setup is not None:
+            self.sybil.setup(self.namespace)
+        self.namespace['self'] = self
 
-    @classmethod
-    def tearDownClass(cls):
-        if cls.sybil.teardown is not None:
-            cls.sybil.teardown(cls.namespace)
+    # @classmethod
+    # def tearDownClass(self):
+    def tearDownNamespace(self):
+        if self.sybil.teardown is not None:
+            self.sybil.teardown(self.namespace)
 
 
 def unittest_integration(sybil: 'Sybil'):
