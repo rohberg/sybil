@@ -9,29 +9,26 @@ class TestCase(BaseTestCase):
 
     sybil = namespace = None
 
-    def __init__(self, example):
-        BaseTestCase.__init__(self)
-        self.example = example
+    def __init__(self, examples):
+        BaseTestCase.__init__(self)    
+        self.examples = isinstance(examples, (list, tuple)) and examples or [examples]
 
     def runTest(self):
         self.setupNamespace()
-        self.example.evaluate()
+        for example in self.examples:
+            example.evaluate()
         self.tearDownNamespace()
 
     def id(self):
-        return f"{self.example.path},line:{self.example.line},column:{self.example.column}"
+        return f"SybilTestCase '{self.examples[0].path}'"
 
     __str__ = __repr__ = id
 
-    # @classmethod
-    # def setUpClass(self):
     def setupNamespace(self):
         if self.sybil.setup is not None:
             self.sybil.setup(self.namespace)
         self.namespace['self'] = self
 
-    # @classmethod
-    # def tearDownClass(self):
     def tearDownNamespace(self):
         if self.sybil.teardown is not None:
             self.sybil.teardown(self.namespace)
