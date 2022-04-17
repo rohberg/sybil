@@ -29,6 +29,6 @@ def test_unittest(capsys):
         exit=False, module=None, testRunner=runner,
         argv=['x', 'discover', '-s', path, '-t', path]
     )
-    assert main.result.testsRun == 3
+    assert main.result.testsRun == 6
     assert len(main.result.failures) == 0
     assert len(main.result.errors) == 0
