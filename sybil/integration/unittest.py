@@ -6,12 +6,6 @@ if TYPE_CHECKING:
 
 
 class TestCase(BaseTestCase):
-    """
-    TestCase class to be initialized with an example or list of examples.
-
-    :param example:
-        A single example or a list of examples.
-    """
 
     sybil = namespace = None
 
@@ -20,17 +14,9 @@ class TestCase(BaseTestCase):
         self.example = example
 
     def runTest(self):
-        if isinstance(self.example, (list, tuple)):
-            if self.sybil.setup is not None:
-                self.sybil.setup(self.namespace)
-            for example in self.example:
-                example.evaluate()
-        else:
-            self.example.evaluate()
+        self.example.evaluate()
 
     def id(self):
-        if isinstance(self.example, (list, tuple)):
-            return self.example[0].path
         return '{},line:{},column:{}'.format(
             self.example.path, self.example.line, self.example.column
         )
