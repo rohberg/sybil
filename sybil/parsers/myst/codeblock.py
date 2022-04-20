@@ -49,8 +49,12 @@ class PythonCodeBlockParser(CodeBlockParser):
         # There must be a nicer way to get line numbers to be correct...
         source = self.pad(example.parsed, example.line)
         source = source.strip().replace("%\n", "\n").replace("% ", "")
+        print("\n--- source", source)
+        print("\n--- initial example.namespace", example.namespace)
         code = compile(
             source, example.path, 'exec', flags=self.flags, dont_inherit=True)
         exec(code, example.namespace)
         # Remove unnecessary __builtins__.
         del example.namespace['__builtins__']
+
+        print("\n--- updated example.namespace", example.namespace)
